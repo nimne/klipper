@@ -3,7 +3,7 @@
 # Copyright (C) 2018  Kevin O'Connor <kevin@koconnor.net>
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
-import os, logging
+import os, logging, io
 
 class VirtualSD:
 
@@ -100,7 +100,13 @@ class VirtualSD:
         try:
             fname = files_by_lower[filename.lower()]
             fname = os.path.join(self.sdcard_dirname, fname)
-            f = open(fname, 'rb')
+
+            if os.path.getsize(fname) > 52428800:
+                f = open(fname, 'rb')
+            else:
+                with open(fname, 'rb') as file_in:
+                    f = io.BytesIO(file_in.read())
+
             f.seek(0, os.SEEK_END)
             fsize = f.tell()
             f.seek(0)
