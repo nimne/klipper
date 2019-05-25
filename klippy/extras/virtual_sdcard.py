@@ -101,7 +101,7 @@ class VirtualSD:
             fname = files_by_lower[filename.lower()]
             fname = os.path.join(self.sdcard_dirname, fname)
 
-            if os.path.getsize(fname) > 52428800:
+            if os.path.getsize(fname) > (150 * 1048576):
                 f = open(fname, 'rb')
             else:
                 with open(fname, 'rb') as file_in:
